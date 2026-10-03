@@ -1,30 +1,36 @@
 # Bounty
 
-**Bug Bounty Board** — Public-facing issue tracker for the desktop client, overlay, and web apps.
+**Turn pet bug reports into actionable fixes.**
 
-Part of [ComputerPets](https://github.com/RicheyWorks/computerpets). Map: [computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem).
+A planned report board for the desktop, overlay, and web apps, with severity triage and privacy-aware log handling.
 
-| | |
+**Stage: design scaffold.** This checkout contains a design document and a source placeholder. The experience below is planned; there is no runnable app or integrated service yet.
+
+[Status](#status) · [Planned experience](#planned-experience) · [Contributor quickstart](#contributor-quickstart) · [Service contract](docs/CONTRACT.md) · [Ecosystem map](https://github.com/RicheyWorks/computerpets-ecosystem)
+
+## Status
+
+| Available today | What you can inspect |
 | --- | --- |
-| Status | Design scaffold — contract frozen, implementation next |
-| License | MIT |
-| First pet | Still [Rui on the desktop](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md). This organ is optional. |
+| [Service contract](docs/CONTRACT.md) | Intended behavior, boundaries, and planned dependencies. |
+| [Source placeholder](src/bounty/index.ts) | Name metadata only; no package.json, app, or runtime is checked in. |
+| [MIT license](LICENSE) | Licensing terms for the repository. |
 
-## The job
+Gameplay, endpoints, integration arrows, and failure handling on this page describe implementation targets. No build/test harness, CI workflow, or product screenshots are included in this scaffold.
 
-Crash logs from Forensics land here. Players file. Operators triage. Payouts (if any) go through Ledger, not a spreadsheet.
+## Planned experience
 
-The flagship overlay already puts a living sticker on the real desktop (Rui first, 210 kinds). Bounty does not replace that. It is one organ.
+- GET /v1/bounties — open, severity, reward
+- POST /v1/reports — player filing (redact paths)
+- POST /v1/payout — operator, Ledger ref
 
-## Who uses it
+### Planned technology
 
-Players filing bugs, operators paying, Forensics dropping fingerprints.
+TypeScript · React 19 · GitHub Issues mirror · severity SLA · optional Ledger payouts
 
-## What it is not
+### Planned connections
 
-Not a public exploit dump. PII stripped. No payout spreadsheet.
-
-## Architecture
+These arrows show intended dependencies, rather than working integrations.
 
 ```mermaid
 flowchart LR
@@ -33,82 +39,48 @@ flowchart LR
   operator -->|payout| ledger
 ```
 
-## Stack
+## Contributor quickstart
 
-TypeScript · React 19 · GitHub Issues mirror · severity SLA · optional Ledger payouts
+With access to this private repository, Git and PowerShell are enough to review the scaffold:
 
-GroupId / namespace: `com.enterprisepet.bounty`  
-Default listen: `8080`
+```powershell
+git clone https://github.com/RicheyWorks/computerpets-bounty.git
+Set-Location computerpets-bounty
+Get-Content docs/CONTRACT.md
+Get-Content src/bounty/index.ts
+```
 
-## Contract
+Read [Service contract](docs/CONTRACT.md) before choosing implementation details. The commands above inspect the checked-in files; app installation, editor launch, and server startup become possible after a buildable project and entry point are added.
 
-### Data
-
-`Bounty(id, severity, rewardAsset) · Report(id, redact, logsCid) · Payout(ref)`
-
-### Surface
-
-- GET /v1/bounties — open, severity, reward
-- POST /v1/reports — player filing (redact paths)
-- POST /v1/payout — operator, Ledger ref
-
-### Failure doctrine
-
-PII in a log → strip before public. Duplicate hash → attach to existing. No public exploit PoC until patched.
-
-## First slice
-
-Build this and stop. Do not boil the ocean.
+### First implementation target
 
 **Public board + report form with path redaction + severity.**
 
 You know it works when: Duplicate hash attaches. Exploit PoC stays private until patched.
 
-## Environment
+Treat this as an acceptance target for a future implementation. Start with the documented slice, add the required project setup and focused tests, and update these instructions with commands that work from a fresh clone.
 
-`GITHUB_TOKEN` (mirror), `LEDGER_URL`
+## Design boundaries
 
-Never commit secrets. Never put Steam or chain keys in the overlay.
+- Stay canon with 210 species. No illegal hybrids. No swapped voices.
+- Treat the desktop overlay as the main quest. This organ is optional until wired.
+- Fail soft: the overlay keeps walking if this service is down, unless this *is* the overlay.
+- No PII in public artifacts (Steam id, wallet, home path, webcam frames).
 
-## Neighbors
+**Required failure behavior:**
 
-- computerpets-forensics
-- computerpets-console
-- computerpets-sdk
-- computerpets-ledger
-- computerpets (issues)
+PII in a log → strip before public. Duplicate hash → attach to existing. No public exploit PoC until patched.
 
-## Layout
+## Ecosystem
 
-```
-computerpets-bounty/
-  README.md           this file
-  LICENSE             MIT
-  docs/CONTRACT.md    the same contract, frozen for implementers
-  src/                implementation lands here
-```
+- [computerpets-forensics](https://github.com/RicheyWorks/computerpets-forensics)
+- [computerpets-console](https://github.com/RicheyWorks/computerpets-console)
+- [computerpets-sdk](https://github.com/RicheyWorks/computerpets-sdk)
+- [computerpets-ledger](https://github.com/RicheyWorks/computerpets-ledger)
+- [computerpets](https://github.com/RicheyWorks/computerpets) (issues)
 
-## Run (Windows)
-
-PowerShell, from this folder, after the flagship helpers (Git, Node LTS 22+, JDK 21 as needed):
-
-```powershell
-cd app; npm install; npm run dev
-```
-
-You do not need this service to meet Rui. The [flagship start-here](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md) is still the first pet.
-
-## Links
-
-- Flagship: [RicheyWorks/computerpets](https://github.com/RicheyWorks/computerpets)
-- This repo: [RicheyWorks/computerpets-bounty](https://github.com/RicheyWorks/computerpets-bounty)
-- Map: [RicheyWorks/computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem)
-- Contract file: [docs/CONTRACT.md](docs/CONTRACT.md)
+Start with the [ComputerPets flagship](https://github.com/RicheyWorks/computerpets) for the desktop pet. This repository describes an optional extension; the [ecosystem map](https://github.com/RicheyWorks/computerpets-ecosystem) explains the broader plan.
 
 ## License
 
 MIT. See [LICENSE](LICENSE).
-
----
-
-*Two hundred ten living kinds. Keep them so a line does not go quiet.*
